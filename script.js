@@ -10,12 +10,13 @@ console.log(data);
 
 fetchData()
 
-fetch("https://swapi.dev/api/people/")
+/* fetch("https://swapi.dev/api/people/")
 .then(response => response.json())
 .then(data => console.log(data)) // csak a második then callback függvényében érhető el a data
 
-// let counter = 1;
-// setInterval(() => {
-//     console.log(counter)
-//     counter++;
-// }, 500)
+let counter = 1;
+setInterval(() => {
+    console.log(counter)
+    counter++;
+}, 500) */
+
