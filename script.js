@@ -1,3 +1,5 @@
+let charactersData = [];
+
 const characterComponent = (name, height, mass) => `
         <div class="character">
         <h2> character: </h2>
@@ -9,11 +11,46 @@ const characterComponent = (name, height, mass) => `
 
 const charactersComponent = (charactersData) => `
   <div class="characters">
-  ${charactersData.map(characterData => characterComponent(characterData.name, characterData.height, characterData.mass)).join(" ")}
+  ${charactersData.map((characterData, index) => characterComponent(characterData.name, characterData.height, characterData.mass, index)).join(" ")}
   </div>
-`
+`;
 
-async function fetchData() {
+const fetchData = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
+
+const makeDomFromData = (data, rootElement) => {
+  charactersData.push(...data.results);
+  let charactersHtml = charactersComponent(charactersData);
+  const buttonHtml = `<button class="fetch">load more...</button>`;
+
+  rootElement.insertAdjacentHTML("beforeend",charactersHtml);
+  if (data.next) {
+    rootElement.insertAdjacentHTML("beforeend",buttonHtml);
+
+  const buttonElement = document.querySelector("button.fetch")
+  buttonElement.addEventListener("click", async () => {
+    buttonElement.innerText = "loading next page...";
+    buttonElement.disabled= true;
+
+    const newData = await fetchData(data.next);
+    rootElement.innerHTML = ""
+    makeDomFromData(newData, rootElement);
+    });
+  }
+}
+
+const init = async () => {
+  const data = await fetchData("https://swapi.dev/api/people/");
+  const rootElement = document.querySelector("#root");
+  makeDomFromData(data, rootElement);
+}
+
+init();
+
+/*async function fetchData() {
     const fetchResult = await fetch("https://swapi.dev/api/people/");
     const data = await fetchResult.json();
     console.log(data);
@@ -25,10 +62,28 @@ async function fetchData() {
     rootElement.insertAdjacentHTML("beforeend", '<button class="fetch">load more...</button>');
   
     const fetchButtonElement = document.querySelector("button.fetch");
-    fetchButtonElement.addEventListener("click", () => {
+    fetchButtonElement.addEventListener("click", async () => {
     console.log("fetch next page");
     console.log(data.next);
-    })
-}
 
-fetchData();
+    const newFetchResult = await fetch(data.next)
+    console.log(newFetchResult);
+    const newData = await newFetchResult.json();
+    console.log(newData);
+    const newCharacters = newData.results;
+    console.log(newCharacters);
+
+    rootElement.insertAdjacentHTML("beforeend", charactersComponent(newCharacters));
+
+    fetchButtonElement.remove();
+    rootElement.insertAdjacentHTML("beforeend", '<button class="fetch">load more...</button>');
+    const newFetchButtonElement = document.querySelector("button.fetch");
+    newFetchButtonElement.addEventListemer("click", () => {
+      console.log("fetch third page");
+      console.log(newData.next);
+ })
+})
+
+} 
+
+fetchData(); */

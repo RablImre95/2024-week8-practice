@@ -7,8 +7,12 @@ font-size: inherit;
 
 div.characters {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
+
+    padding: 20px;
 }
 
 div.character {
@@ -18,6 +22,8 @@ div.character {
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    width: 300px;
 }
 
 button.fetch {
