@@ -18,12 +18,18 @@ div.characters {
 div.character {
     border: 2px solid black;
     padding: 20px;
+ 
     
     display: flex;
     flex-direction: column;
-    gap: 20px;
+
+    align-self: flex-start;
 
     width: 300px;
+}
+
+div.character  p, div.character > button {
+    margin: 5px 0;
 }
 
 div.more-data {
@@ -31,11 +37,19 @@ div.more-data {
     /* opacity: 0; */
     height: 0px;
     overflow: hidden;
+
+
+    transition: all 0.3s ease;
 }
 
+div.character button {
+    width: 100px;
+    margin: 5px auto 0;
+    padding: 5px;
+}
 
 button.more.clicked ~ div.more-data {
-    height: 40px;
+    height: 50px;
 }
 
 button.fetch {

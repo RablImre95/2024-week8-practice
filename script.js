@@ -9,8 +9,8 @@ const characterComponent = (name, height, mass, index, hairColor, eyeColor) => `
 
     <button class="more">show more</button>
     <div class="more-data">
-    <p class="hair-color"> ${hairColor} </p>
-    <p class="eye-color"> ${eyeColor} </p>
+    <p class="hair-color"> Hair color: ${hairColor} </p>
+    <p class="eye-color"> Eye color: ${eyeColor} </p>
     </div>
   </div>
 `;
@@ -44,7 +44,11 @@ const makeDomFromData = (data, rootElement) => {
 
   rootElement.insertAdjacentHTML("beforeend", charactersHtml); //belépési pontjába a weboldalnak adja hozzá a karaktert
   const moreButtonElements = document.querySelectorAll("button.more")
-  moreButtonElements.forEach(moreButtonElement => moreButtonElement.addEventListener("click", () => {moreButtonElement.classList.toggle("clicked")}));
+  moreButtonElements.forEach(moreButtonElement => moreButtonElement.addEventListener("click", () => {
+    moreButtonElement.classList.toggle("clicked")
+  
+    moreButtonElement.innerText === "show more" ? moreButtonElement.innerText = "show less" : moreButtonElement.innerText = "show more"
+  }));
 
   if (data.next) { //gomb hozzáadása a weoboldalhoz
     rootElement.insertAdjacentHTML("beforeend", buttonHtml);
