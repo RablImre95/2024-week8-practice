@@ -1,18 +1,31 @@
 let charactersData = [];
 
-const characterComponent = (name, height, mass, index) => `
+const characterComponent = (name, height, mass, index, hairColor, eyeColor) => `
   <div class="character">
     <h2> character ${index + 1}: </h2>
     <p class="name"> ${name} </p>
     <p class="height"> ${height}cm </p>
     <p class="mass"> ${mass}kg </p>
+
+    <button class="more">show more</button>
+    <div class="more-data">
+    <p class="hair-color"> ${hairColor} </p>
+    <p class="eye-color"> ${eyeColor} </p>
+    </div>
   </div>
 `;
 //JS primitívből elkészíti nekünk a HTML kódot a komponens, a karakter és a karakterek is, kap bemenő paramétert és körbeöleli HTML kóddal
 const charactersComponent = (charactersData) => `
   <div class="characters">
     ${charactersData
-    .map((characterData, index) => characterComponent(characterData.name, characterData.height, characterData.mass, index))
+    .map((characterData, index) => characterComponent(
+      characterData.name, 
+      characterData.height, 
+      characterData.mass, 
+      index,
+      characterData.hair_color,
+      characterData.eye_color
+    ))
     .join(" ")
   }
   </div>
@@ -30,6 +43,9 @@ const makeDomFromData = (data, rootElement) => {
   const buttonHtml = `<button class="fetch">load more...</button>`;
 
   rootElement.insertAdjacentHTML("beforeend", charactersHtml); //belépési pontjába a weboldalnak adja hozzá a karaktert
+  const moreButtonElements = document.querySelectorAll("button.more")
+  moreButtonElements.forEach(moreButtonElement => moreButtonElement.addEventListener("click", () => {moreButtonElement.classList.toggle("clicked")}));
+
   if (data.next) { //gomb hozzáadása a weoboldalhoz
     rootElement.insertAdjacentHTML("beforeend", buttonHtml);
 
@@ -47,6 +63,7 @@ const makeDomFromData = (data, rootElement) => {
 
 const init = async () => {
   const data = await fetchData("https://swapi.dev/api/people/");
+  console.log(data)
   const rootElement = document.querySelector("#root");
   makeDomFromData(data, rootElement);
 }
